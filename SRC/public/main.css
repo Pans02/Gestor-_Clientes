@@ -1,0 +1,52 @@
+body {
+    background-color: #f7f7f7;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    color: #2c3e50;
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #34495e;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.alert-danger {
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #7f8c8d;
+}
+
+#home-section {
+    background: url('https://th.bing.com/th/id/R.6f6499a403cf64afea180b6419def4ef?rik=ljQG9npNSLtruQ&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f06%2fTechnology-HD-Backgrounds.jpg&ehk=jOLv2YqWfNAGxGz3R8y86V6moqIJtoPsg6KppdMPTHs%3d&risl=&pid=ImgRaw&r=0') no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0; 
+    color: black;
+}

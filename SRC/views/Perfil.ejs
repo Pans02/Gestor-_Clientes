@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    <link rel="stylesheet" href="/public/carnet.css">
+<body>
+    <div class="perfil-carnet">
+        <h1>Mi Perfil</h1>
+        
+        <div class="datos-carnet">
+            <p><strong>Nombre:</strong> <%= user.nombre_usuario %></p>
+            <p><strong>Correo:</strong> <%= user.correo_usuario %></p>
+            <p><strong>RUT:</strong> <%= user.rut_usuario %></p>
+            <p><strong>Teléfono:</strong> <%= user.telefono_usuario || 'No disponible' %></p>
+        </div>
+
+        <form action="/actualizar-perfil" method="POST">
+            <label for="nombre_usuario">Nombre:</label>
+            <input type="text" id="nombre_usuario" name="nombre_usuario" value="<%= user.nombre_usuario %>">
+            
+            <label for="correo_usuario">Correo:</label>
+            <input type="email" id="correo_usuario" name="correo_usuario" value="<%= user.correo_usuario %>">
+
+            <label for="telefono_usuario">Teléfono:</label>
+            <input type="text" id="telefono_usuario" name="telefono_usuario" value="<%= user.telefono_usuario %>">
+
+            <button type="submit">Actualizar</button>
+        </form>
+
+    </div>
+</body>
+</html>

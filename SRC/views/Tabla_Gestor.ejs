@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilix - Sistema de Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        function toggleSection(section) {
+            document.getElementById('home-section').style.display = 'none';
+            document.getElementById('tabla-section').style.display = 'none';
+            document.getElementById(section).style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleSection('home-section');
+            $('#tabla-clientes').DataTable({
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                autoWidth: false,
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros)",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    }
+                }
+            });
+
+            const logo = document.getElementById('logo-bilix');
+            logo.addEventListener('click', () => {
+                toggleSection('home-section');
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a id="logo-bilix" class="navbar-brand" href="#">
+                <img src="https://www.bilix.cl/wp-content/uploads/2020/05/logo-bilix--95x45.png" title="logo bilix" alt="logo bilix">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="toggleSection('home-section')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="toggleSection('tabla-section')">Tabla Clientes</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/mi-perfil">Mi Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/">Salir</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <section id="home-section" style="background: url('https://www.pixelstalk.net/wp-content/uploads/2016/06/Technology-Wallpapers.jpg') no-repeat center center; background-size: cover; padding: 250px;">
+            <h1 class="text-center">Bienvenido a BiLiX</h1>
+            <p class="text-center">Sistema de Administración</p>
+        </section>
+
+        <section id="tabla-section" style="display: none;">
+            <div class="card p-3 mb-4" style="background-color: #f8f9fa;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="m-0">Tabla de Clientes</h2>
+                    <a href="/agregar_caso" class="btn btn-success">Agregar Cliente</a>
+                </div>
+            </div>
+
+            <div class="card p-3" style="background-color: #f8f9fa;">
+                <table id="tabla-clientes" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Consulta</th>
+                            <th>RUT Cliente</th>
+                            <th>Nombre Cliente</th>
+                            <th>Correo Cliente</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (consultas && consultas.length > 0) { %>
+                            <% consultas.forEach(consulta => { %>
+                                <tr>
+                                    <td><%= consulta.id_consulta %></td>
+                                    <td><%= consulta.rut_cliente %></td>
+                                    <td><%= consulta.nombre_cliente %></td>
+                                    <td><%= consulta.correo_cliente %></td>
+                                    <td><%= consulta.estado === true || consulta.estado === 1 ? 'Terminado' : 'En Proceso' %></td>
+                                    <td>
+                                        <div class="d-flex flex-wrap justify-content-center">
+                                            <a href="/detalle/<%= consulta.rut_cliente %>" class="btn btn-info btn-sm me-1">Ver Detalles</a>
+                                            <form action="/buscar_modificar" method="POST" class="d-inline">
+                                                <input type="hidden" name="rut_cliente" value="<%= consulta.rut_cliente %>">
+                                                <button type="submit" class="btn btn-warning btn-sm me-1">Modificar</button>
+                                            </form>
+                                            <form action="/buscar_eliminar" method="POST" class="d-inline">
+                                                <input type="hidden" name="rut_cliente" value="<%= consulta.rut_cliente %>">
+                                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6" class="text-center">No hay consultas disponibles.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
