@@ -101,28 +101,6 @@ app.get('/Tabla_Gestor', async (req, res) => {
 });
 
 // Ruta para buscar un cliente
-app.post('/buscar_caso', async (req, res) => {
-    const { rut_cliente } = req.body;
-
-    try {
-        const resultado = await pool.request()
-            .input('rut_cliente', rut_cliente)
-            .query('SELECT * FROM Casos_Consulta WHERE rut_cliente = @rut_cliente');
-
-        res.render('Tabla_Gestor', { 
-            consultas: resultado.recordset, 
-            error: null 
-        });
-    } catch (err) {
-        console.error(err);
-        res.render('Tabla_Gestor', { 
-            consultas: [], 
-            error: 'Error al buscar el caso. Por favor, inténtalo nuevamente.' 
-        });
-    }
-});
-
-// Ruta para guardar un nuevo caso
 app.post('/guardar', async (req, res) => {
     const { rut_cliente, nombre_cliente, correo_cliente, estado } = req.body;
 
@@ -137,21 +115,59 @@ app.post('/guardar', async (req, res) => {
                 error: `El cliente con RUT ${rut_cliente} ya existe. Para modificar los datos, utiliza la opción "Modificar" en la tabla.`,
             });
         }
+        const estadoNumerico = estado === '1' ? true : false;
         await pool.request()
             .input('rut_cliente', mssql.NVarChar, rut_cliente)
             .input('nombre_cliente', mssql.NVarChar, nombre_cliente)
             .input('correo_cliente', mssql.NVarChar, correo_cliente)
-            .input('estado', mssql.Bit, estado)
+            .input('estado', mssql.Bit, estadoNumerico)
             .query(`
                 INSERT INTO Casos_Consulta (rut_cliente, nombre_cliente, correo_cliente, estado)
                 VALUES (@rut_cliente, @nombre_cliente, @correo_cliente, @estado)
             `);
+
         res.redirect('/Tabla_Gestor');
     } catch (err) {
         console.error('Error al guardar el caso:', err.message);
         res.status(500).send('Error al guardar el caso.');
     }
 });
+
+
+// Ruta para guardar un nuevo caso
+app.post('/guardar', async (req, res) => {
+    const { rut_cliente, nombre_cliente, correo_cliente, estado } = req.body;
+
+    try {
+        const pool = await mssql.connect(dbConfig);
+
+        const existingCase = await pool.request()
+            .input('rut_cliente', mssql.NVarChar, rut_cliente)
+            .query('SELECT * FROM Casos_Consulta WHERE rut_cliente = @rut_cliente');
+
+        if (existingCase.recordset.length > 0) {
+            return res.render('Agregar_Caso', {
+                error: `El cliente con RUT ${rut_cliente} ya existe. Para modificar los datos, utiliza la opción "Modificar" en la tabla.`,
+            });
+        }
+        const estadoNumerico = estado === '1' ? true : false;
+        await pool.request()
+            .input('rut_cliente', mssql.NVarChar, rut_cliente)
+            .input('nombre_cliente', mssql.NVarChar, nombre_cliente)
+            .input('correo_cliente', mssql.NVarChar, correo_cliente)
+            .input('estado', mssql.Bit, estadoNumerico)
+            .query(`
+                INSERT INTO Casos_Consulta (rut_cliente, nombre_cliente, correo_cliente, estado)
+                VALUES (@rut_cliente, @nombre_cliente, @correo_cliente, @estado)
+            `);
+
+        res.redirect('/Tabla_Gestor');
+    } catch (err) {
+        console.error('Error al guardar el caso:', err.message);
+        res.status(500).send('Error al guardar el caso.');
+    }
+});
+
 
 const normalizarRut = (rut) => {
     return rut.replace(/[.-]/g, ''); 
@@ -231,15 +247,17 @@ app.post('/buscar_eliminar', async (req, res) => {
 // Ruta para eliminar un caso
 app.post('/eliminar_caso', async (req, res) => {
     const { rut_cliente } = req.body;
+    console.log('RUT Cliente recibido:', rut_cliente);
 
     try {
         const pool = await mssql.connect(dbConfig);
-        await pool.request()
+        const result = await pool.request()
             .input('rut_cliente', mssql.NVarChar, rut_cliente)
             .query(`
                 DELETE FROM Casos_Consulta
                 WHERE rut_cliente = @rut_cliente
             `);
+        console.log('Registros afectados:', result.rowsAffected);
         res.redirect('/Tabla_Gestor');
     } catch (err) {
         console.error('Error al eliminar el caso:', err.message);

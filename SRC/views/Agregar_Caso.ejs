@@ -11,7 +11,8 @@
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Agregar Nuevo Caso</h2> <a href="/Tabla_Gestor" class="btn btn-secondary">Volver</a>
+        <h2 class="text-center">Agregar Nuevo Caso</h2> 
+        <a href="/Tabla_Gestor" class="btn btn-secondary">Volver</a>
 
         <% if (typeof error !== 'undefined' && error) { %>
         <div class="alert alert-danger" role="alert">
@@ -38,7 +39,7 @@
                     <option value="1">En Proceso</option>
                     <option value="0">Terminado</option>
                 </select>
-            </div>
+            </div>            
 
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
@@ -52,11 +53,11 @@
             cuerpo = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.');  
             return cuerpo + (dv ? '-' + dv : ''); 
         }
+
         document.getElementById('rut_cliente').addEventListener('input', function () {
             this.value = formatearRut(this.value);
         });
     </script>
-        
 </body>
 
 </html>

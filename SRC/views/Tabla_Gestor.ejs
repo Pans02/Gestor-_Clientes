@@ -120,7 +120,7 @@
                                     <td><%= consulta.rut_cliente %></td>
                                     <td><%= consulta.nombre_cliente %></td>
                                     <td><%= consulta.correo_cliente %></td>
-                                    <td><%= consulta.estado === true || consulta.estado === 1 ? 'Terminado' : 'En Proceso' %></td>
+                                    <td><%= consulta.estado === true || consulta.estado === 1 ? 'En Proceso' : 'Terminado' %></td>
                                     <td>
                                         <div class="d-flex flex-wrap justify-content-center">
                                             <a href="/detalle/<%= consulta.rut_cliente %>" class="btn btn-info btn-sm me-1">Ver Detalles</a>
