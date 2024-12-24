@@ -13,7 +13,7 @@
     <div class="container mt-5">
         <h2 class="text-center">Modificar Caso</h2>
 
-        <form action="/modificar_caso" method="POST">
+        <form action="/modificar_caso" method="POST" onsubmit="redirectToTable()">
             <input type="hidden" name="id_consulta" value="<%= caso.id_consulta %>">
             
             <div class="form-group">
@@ -43,7 +43,7 @@
             <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
         </form>
 
-        <a href="/Tabla_Gestor" class="btn btn-secondary mt-3">Volver a la tabla</a>
+        <a href="/Tabla_Gestor?section=tabla" class="btn btn-secondary mt-3">Volver a la tabla</a>
     </div>
     
 </body>

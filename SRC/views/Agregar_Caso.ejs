@@ -12,7 +12,7 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Agregar Nuevo Caso</h2> 
-        <a href="/Tabla_Gestor" class="btn btn-secondary">Volver</a>
+        <a href="/Tabla_Gestor?section=tabla" class="btn btn-secondary">Volver</a>
 
         <% if (typeof error !== 'undefined' && error) { %>
         <div class="alert alert-danger" role="alert">
@@ -20,7 +20,7 @@
         </div>
         <% } %>
 
-        <form action="/guardar" method="POST">
+        <form action="/guardar" method="POST" onsubmit="redirectToTable()">
             <div class="mb-3">
                 <label for="rut_cliente" class="form-label">RUT Cliente</label>
                 <input type="text" class="form-control" id="rut_cliente" name="rut_cliente" required>
@@ -57,6 +57,11 @@
         document.getElementById('rut_cliente').addEventListener('input', function () {
             this.value = formatearRut(this.value);
         });
+    </script>
+    <script>
+        function redirectToTable() {
+            setTimeout(() => { window.location.href = '/Tabla_Gestor'; }, 500);
+        }
     </script>
 </body>
 

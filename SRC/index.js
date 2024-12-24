@@ -126,7 +126,7 @@ app.post('/guardar', async (req, res) => {
                 VALUES (@rut_cliente, @nombre_cliente, @correo_cliente, @estado)
             `);
 
-        res.redirect('/Tabla_Gestor');
+        res.redirect('/Tabla_Gestor?section=tabla');
     } catch (err) {
         console.error('Error al guardar el caso:', err.message);
         res.status(500).send('Error al guardar el caso.');
@@ -161,7 +161,7 @@ app.post('/guardar', async (req, res) => {
                 VALUES (@rut_cliente, @nombre_cliente, @correo_cliente, @estado)
             `);
 
-        res.redirect('/Tabla_Gestor');
+        res.redirect('/Tabla_Gestor?section=tabla');
     } catch (err) {
         console.error('Error al guardar el caso:', err.message);
         res.status(500).send('Error al guardar el caso.');
@@ -214,7 +214,7 @@ app.post('/modificar_caso', async (req, res) => {
                 WHERE id_consulta = @id_consulta
             `);
 
-        res.redirect('/Tabla_Gestor');
+        res.redirect('/Tabla_Gestor?section=tabla');
     } catch (err) {
         console.error('Error al modificar el caso:', err.message);
         res.status(500).send('Error al modificar el caso.');
@@ -258,7 +258,7 @@ app.post('/eliminar_caso', async (req, res) => {
                 WHERE rut_cliente = @rut_cliente
             `);
         console.log('Registros afectados:', result.rowsAffected);
-        res.redirect('/Tabla_Gestor');
+        res.redirect('/Tabla_Gestor?section=tabla');
     } catch (err) {
         console.error('Error al eliminar el caso:', err.message);
         res.status(500).send('Error al eliminar el caso.');

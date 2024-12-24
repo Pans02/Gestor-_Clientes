@@ -20,35 +20,45 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            toggleSection('home-section');
-            $('#tabla-clientes').DataTable({
-                paging: true,
-                lengthChange: true,
-                searching: true,
-                ordering: true,
-                info: true,
-                autoWidth: false,
-                language: {
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_ registros por página",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros)",
-                    zeroRecords: "No se encontraron registros coincidentes",
-                    paginate: {
-                        first: "Primero",
-                        previous: "Anterior",
-                        next: "Siguiente",
-                        last: "Último"
-                    }
-                }
-            });
+        const urlParams = new URLSearchParams(window.location.search);
+        const section = urlParams.get('section');
 
-            const logo = document.getElementById('logo-bilix');
-            logo.addEventListener('click', () => {
-                toggleSection('home-section');
-            });
+        if (section === 'tabla') {
+            toggleSection('tabla-section');
+        } else {
+            toggleSection('home-section');
+        }
+
+        $('#tabla-clientes').DataTable({
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            autoWidth: false,
+            language: {
+                search: "Buscar:",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                infoFiltered: "(filtrado de _MAX_ registros)",
+                zeroRecords: "No se encontraron registros coincidentes",
+                paginate: {
+                    first: "Primero",
+                    previous: "Anterior",
+                    next: "Siguiente",
+                    last: "Último"
+                }
+            }
         });
+
+        const logo = document.getElementById('logo-bilix');
+        logo.addEventListener('click', () => {
+            toggleSection('home-section');
+        });
+    });
+
+
     </script>
 </head>
 

@@ -22,7 +22,7 @@
                 <p><strong>Estado:</strong> <%= caso.estado ? 'Activo' : 'Inactivo' %></p>
             </div>
         </div>
-        <form action="/eliminar_caso" method="POST">
+        <form action="/eliminar_caso" method="POST" onsubmit="redirectToTable()">
 
             <input type="hidden" name="rut_cliente" value="<%= caso.rut_cliente %>">
             <button type="submit" class="btn btn-danger">Eliminar</button>
