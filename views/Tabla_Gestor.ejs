@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Casos | Sentinel</title>
+
+    <!-- CSS -->
+    <link href="/css/theme.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fa;
+        }
+
+        .table-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/Tabla_Gestor">
+                <i class="fa fa-shield-alt"></i> Sentinel
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Tabla_Gestor">
+                            <i class="fa fa-folder-open"></i> Casos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tickets">
+                            <i class="fa fa-headset"></i> Tickets Soporte
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Perfil">
+                            <i class="fa fa-user-circle"></i> Mi Perfil
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="d-flex">
+                    <a href="/logout" class="btn btn-danger">
+                        <i class="fa fa-right-from-bracket"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container table-container">
+
+        <!-- TÍTULO + BOTONES -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0"><i class="fa fa-table"></i> Gestión de Casos</h3>
+
+            <div>
+                <a href="/Agregar_Caso" class="btn btn-primary me-2">
+                    <i class="fa fa-plus-circle"></i> Agregar Caso
+                </a>
+
+                <button id="btnExport" class="btn btn-success">
+                    <i class="fa fa-download"></i> Exportar Tabla
+                </button>
+            </div>
+        </div>
+
+        <!-- FILTROS AVANZADOS -->
+        <div class="filter-box">
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Filtrar por Estado</label>
+                    <select id="filtroEstado" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Filtrar por Usuario</label>
+                    <input type="text" id="filtroUsuario" class="form-control" placeholder="Nombre usuario">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">RUT Cliente</label>
+                    <input type="text" id="filtroRUT" class="form-control" placeholder="Ej: 12.345.678-9">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Correo Cliente</label>
+                    <input type="text" id="filtroCorreo" class="form-control" placeholder="correo@dominio.cl">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TABLA -->
+        <table id="tabla" class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>RUT</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Estado</th>
+                    <th>Atendido Por</th>
+                    <th>Último Detalle</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% consultas.forEach(c => { %>
+                <tr>
+                    <td><%= c.id_consulta %></td>
+                    <td><%= c.rut_cliente %></td>
+                    <td><%= c.nombre_cliente %></td>
+                    <td><%= c.correo_cliente %></td>
+
+                    <td>
+                        <% if (c.estado) { %>
+                        <span class="badge bg-success">Activo</span>
+                        <% } else { %>
+                        <span class="badge bg-danger">Inactivo</span>
+                        <% } %>
+                    </td>
+
+                    <td><%= c.atendido_por ?? "Sin asignar" %></td>
+                    <td><%= c.ultimo_detalle ?? "Sin detalles" %></td>
+
+                    <td>
+                        <a href="/detalle/<%= c.rut_cliente %>" class="btn btn-primary btn-sm">
+                            Ver
+                        </a>
+
+                        <a href="/caso/eliminar/<%= c.id_consulta %>"
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Eliminar caso?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script>
+        let table = new DataTable('#tabla', {
+            dom: 'Bfrtip',
+        });
+
+        // Botón exportar manual
+        document.getElementById("btnExport").addEventListener("click", () => {
+            table.button('.buttons-excel').trigger();
+        });
+
+        // Filtros avanzados
+        $("#filtroEstado").on("change", function () {
+            table.column(4).search(this.value).draw();
+        });
+
+        $("#filtroUsuario").on("keyup", function () {
+            table.column(5).search(this.value).draw();
+        });
+
+        $("#filtroRUT").on("keyup", function () {
+            table.column(1).search(this.value).draw();
+        });
+
+        $("#filtroCorreo").on("keyup", function () {
+            table.column(3).search(this.value).draw();
+        });
+
+    </script>
+
+</body>
+</html>

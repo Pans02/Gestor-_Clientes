@@ -1,0 +1,40 @@
+/* public/css/theme.css */
+:root{
+  --primary:#0f4c75; /* azul oscuro */
+  --accent:#3282b8;  /* azul claro */
+  --muted:#f4f6f9;
+  --card-bg:#ffffff;
+  --text:#212529;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #0a2a43 0%, #0f4c75 45%, #ffffff 100%);
+  color: var(--text);
+}
+
+/* tarjeta blanca central */
+.card-theme {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(16,24,40,0.08);
+  padding: 18px;
+}
+
+/* navbar */
+.navbar-brand {
+  font-weight:700;
+  color:var(--card-bg);
+}
+.navbar-dark .navbar-nav .nav-link { color: rgba(255,255,255,0.9); }
+
+/* botones */
+.btn-primary {
+  background: linear-gradient(90deg,var(--primary),var(--accent));
+  border:none;
+  box-shadow: none;
+}
+
+/* badges */
+.badge-success { background:#28a745; }
+.badge-danger { background:#dc3545; }

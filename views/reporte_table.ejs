@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Reporte - Sentinel</title>
+  <link href="/css/theme.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <h3>Reporte avanzado</h3>
+    <a href="/reporte/pdf" class="btn btn-primary mb-3">Descargar PDF</a>
+    <table class="table table-striped">
+      <thead><tr>
+        <th>ID</th><th>RUT</th><th>Nombre</th><th>Correo</th><th>Último detalle</th><th>Fecha</th>
+      </tr></thead>
+      <tbody>
+        <% rows.forEach(r => { %>
+          <tr>
+            <td><%= r.id_consulta %></td>
+            <td><%= r.rut_cliente %></td>
+            <td><%= r.nombre_cliente %></td>
+            <td><%= r.correo_cliente %></td>
+            <td><%= r.ultimo_detalle || '-' %></td>
+            <td><%= r.ultima_fecha ? r.ultima_fecha.toISOString().split('T')[0] : '-' %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
